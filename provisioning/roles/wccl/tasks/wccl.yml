@@ -1,0 +1,15 @@
+---
+- name: Clone Wccl repo
+  git: repo=http://nlp.pwr.wroc.pl/wccl.git dest=/opt/wccl
+
+- name: Create Wccl build dir
+  file: path=/opt/wccl/bin state=directory mode=0755
+
+- name: Run CMake
+  command: cmake .. chdir=/opt/wccl/bin
+
+- name: Compile Wccl
+  make: chdir=/opt/wccl/bin
+
+- name: Install Wccl
+  make: chdir=/opt/wccl/bin target=install

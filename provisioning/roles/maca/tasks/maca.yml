@@ -1,0 +1,15 @@
+---
+- name: Clone Maca repo
+  git: repo=http://nlp.pwr.wroc.pl/maca.git dest=/opt/maca
+
+- name: Create Maca build dir
+  file: path=/opt/maca/bin state=directory mode=0755
+
+- name: Run CMake
+  command: cmake .. chdir=/opt/maca/bin
+
+- name: Compile Maca
+  make: chdir=/opt/maca/bin
+
+- name: Install Maca
+  make: chdir=/opt/maca/bin target=install

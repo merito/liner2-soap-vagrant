@@ -1,0 +1,11 @@
+--- liner25_master_rc3/g419-corpus/src/main/java/g419/corpus/io/reader/PlainTextStreamReader.java       2017-03-23 16:05:01.500770446 +0000
++++ liner25_master_rc3/g419-corpus/src/main/java/g419/corpus/io/reader/PlainTextStreamReader_linux.java  2015-10-29 12:39:33.000000000 +0000
+@@ -118,7 +118,7 @@
+			tager_writer.close();
+			String cmd = "";
+			if (analyzer.equals("wcrft")){
+-				cmd = "wcrft-app nkjp_e2.ini -i text -o ccl " + "liner2_input.tmp"; //+ tager_input.getAbsolutePath();
++				cmd = "wcrft-app nkjp_e2.ini -i text -o ccl -O liner2_input.tmp.tag " + "liner2_input.tmp"; //+ tager_input.getAbsolutePath();
+			}
+			else if(analyzer.equals("maca")){
+				cmd =  "maca-analyse -qs morfeusz-nkjp-official -o ccl";

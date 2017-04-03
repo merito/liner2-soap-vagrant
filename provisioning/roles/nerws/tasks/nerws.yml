@@ -1,0 +1,55 @@
+---
+- name: Download Ner-Ws repo
+  get_url: url=http://tools.clarin-pl.eu/share/ner-ws.7z dest=/opt/ner-ws.7z
+
+- name: Extract Ner-Ws
+  command: chdir=/opt creates=/opt/ner-ws 7z x ner-ws.7z
+
+- name: Create MySQL database
+  mysql_db: name=nerws state=present encoding=utf8
+  register: database
+
+- name: Create MySQL user and grant privileges
+  command: mysql -u root -e "create user 'badger'@'localhost' identified by 'badgerPWr';"
+  ignore_errors: yes
+- name: Create MySQL user and grant privileges
+  command: mysql -u root -e "create user 'badger'@'%' identified by 'badgerPWr';"
+  ignore_errors: yes
+- name: Create MySQL user and grant privileges
+  command: mysql -u root -e "grant all privileges on * . * to 'badger'@'localhost';"
+- name: Create MySQL user and grant privileges
+  command: mysql -u root -e "grant all privileges on * . * to '\"$NERWS_DB_USER\"'@'%';"
+- name: Create MySQL user and grant privileges
+  command: mysql -u root -e "flush privileges;"
+
+- name: Fill database
+  shell: mysql -u root nerws < /opt/ner-ws/database/liner2_create.sql
+  when: database.changed
+
+- name: Set database details and path to app config
+  lineinfile: path=/opt/ner-ws/public_html/ws/config.php regexp='cfg_db_host' line='$cfg_db_host = "localhost";'
+- lineinfile: path=/opt/ner-ws/public_html/ws/config.php regexp='cfg_db_user' line='$cfg_db_user = "badger";'
+- lineinfile: path=/opt/ner-ws/public_html/ws/config.php regexp='cfg_db_pass' line='$cfg_db_pass = "badgerPWr";'
+- lineinfile: path=/opt/ner-ws/public_html/ws/config.php regexp='cfg_db_name' line='$cfg_db_name = "nerws";'
+- lineinfile: path=/opt/ner-ws/public_html/ws/config.php regexp='cfg_dir' line='$cfg_dir = "/opt/ner-ws/public_html/ws/";'
+
+- name: Replace hardcoded IP to localhost
+  replace: path=/opt/ner-ws/public_html/ws/nerws.wsdl regexp='188.124.184.105' replace='localhost:8080'
+
+- name: Replace hardcoded IP to localhost
+  replace: path=/opt/ner-ws/public_html/ws/log.php regexp='/logs/log.txt' replace='logs/log.txt'
+
+- name: Create dir and log file inside
+  file: path=/opt/ner-ws/public_html/ws/logs state=directory
+
+- file: path=/opt/ner-ws/public_html/ws/logs/log.txt state=touch
+
+- name: Copy apache site config
+  copy: src=files/nerws.conf dest=/etc/apache2/sites-available/nerws.conf
+
+- name: Enable Ner-Ws in apache
+  command: a2ensite nerws.conf
+  notify: restart apache
+
+- name: Ner-Ws permissions
+  file: path=/opt/ner-ws/public_html state=directory owner=www-data group=www-data mode=0755 recurse=yes

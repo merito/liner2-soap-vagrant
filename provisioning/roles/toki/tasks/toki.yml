@@ -1,0 +1,15 @@
+---
+- name: Clone Toki repo
+  git: repo=http://nlp.pwr.wroc.pl/toki.git dest=/opt/toki
+
+- name: Create Toki build dir
+  file: path=/opt/toki/bin state=directory mode=0755
+
+- name: Run CMake
+  command: cmake .. chdir=/opt/toki/bin
+
+- name: Compile Toki
+  make: chdir=/opt/toki/bin
+
+- name: Install Toki
+  make: chdir=/opt/toki/bin target=install

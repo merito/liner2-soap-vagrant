@@ -1,0 +1,22 @@
+---
+- name: Get Liner 2.5 models
+  get_url: url=http://tools.clarin-pl.eu/share/liner252-ws-pack-example.7z dest=/opt/liner252-ws-pack-example.7z
+
+- name: Extract models
+  command: chdir=/opt creates=/opt/liner252-ws-pack-example 7z x liner252-ws-pack-example.7z
+
+- name: Get Liner 2.5 timex models
+  get_url: url=https://clarin-pl.eu/dspace/bitstream/handle/11321/302/liner25_model_timex.7z dest=/opt/liner25_model_timex.7z
+
+- name: Extract models
+  command: chdir=/opt creates=/opt/liner25_model_timex 7z x liner25_model_timex.7z
+
+- name: Get Liner 2.5 events models
+  get_url: url=https://clarin-pl.eu/dspace/bitstream/handle/11321/301/liner25_model_events.7z dest=/opt/liner25_model_events.7z
+
+- name: Extract models
+  command: chdir=/opt creates=/opt/liner25_model_events 7z x liner25_model_events.7z
+
+- name: Copy daemon_cfg.ini
+  copy: src=files/daemon_cfg.ini dest=/opt/daemon_cfg.ini
+

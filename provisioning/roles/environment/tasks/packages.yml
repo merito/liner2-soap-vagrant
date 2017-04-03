@@ -1,0 +1,55 @@
+---
+- name: Install tools
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - python-software-properties
+    - git
+
+- name: Install Python tools and libraries 
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - python-dev
+    - python-pip
+    - python-setuptools
+    - python-numpy
+    - python-scipy
+    - python-zsi
+    - python-networkx
+    - python-mysqldb
+    - python-software-properties
+    - python-nose
+
+# - name: Install Python modules
+#   pip: name={{ item }} state=latest
+#   with_items:
+#     - gensim
+#     - pyyaml
+#     - nltk
+
+- name: Install compilers and C++ libs
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - cmake
+    - gcc
+    - g++
+    - libboost-all-dev
+    - libreadline-dev
+    - libxml++2.6-dev
+    - libloki-dev
+    - libicu-dev
+    - libedit-dev
+    - libantlr-dev
+    - bison
+    - flex
+    - swig
+    - ant
+    - p7zip-full
+    - build-essential
+    - subversion
+
+- name: Install sfst libs
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - libsfst1-1.2-0
+    - libsfst1-1.2-0-dev
+

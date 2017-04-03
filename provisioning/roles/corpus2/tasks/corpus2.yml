@@ -1,0 +1,15 @@
+---
+- name: Clone Corpus2 repo
+  git: repo=http://nlp.pwr.wroc.pl/corpus2.git dest=/opt/corpus2
+
+- name: Create Corpus2 build dir
+  file: path=/opt/corpus2/bin state=directory mode=0755
+
+- name: Run CMake
+  command: cmake .. chdir=/opt/corpus2/bin
+
+- name: Compile Corpus2
+  make: chdir=/opt/corpus2/bin
+
+- name: Install Corpus2
+  make: chdir=/opt/corpus2/bin target=install

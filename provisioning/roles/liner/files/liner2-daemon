@@ -1,0 +1,5 @@
+# Get liner2 location
+DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+# Run g419-liner2-daemon
+java -Xmx4024M -cp -Djava.library.path=$DIR/lib -jar $DIR/g419-liner2-daemon/build/libs/g419-liner2-daemon-2.5-SNAPSHOT-all.jar $@

@@ -1,0 +1,18 @@
+---
+- hosts: all
+  sudo: yes
+  roles:
+    - ansible-oracle-java
+    - environment
+    - corpus2
+    - morfeusz
+    - crf
+    - toki
+    - maca
+    - wccl
+    - wcrft
+    - liner
+    - nerws
+  vars:
+    - java_version: 8
+    - java_set_javahome: true

@@ -1,0 +1,15 @@
+---
+- name: Clone Wcrft repo
+  git: repo=http://nlp.pwr.wroc.pl/wcrft2.git dest=/opt/wcrft2
+
+- name: Create Wcrft build dir
+  file: path=/opt/wcrft2/bin state=directory mode=0755
+
+- name: Run CMake
+  command: cmake .. chdir=/opt/wcrft2/bin
+
+- name: Compile Wcrft
+  make: chdir=/opt/wcrft2/bin
+
+- name: Install Wcrft
+  make: chdir=/opt/wcrft2/bin target=install

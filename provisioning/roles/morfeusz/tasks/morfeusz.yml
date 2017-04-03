@@ -1,0 +1,9 @@
+---
+- name: Add PPA Bartosz Zaborowski NLP
+  apt_repository: repo=ppa:bartosz-zaborowski/nlp state=present update_cache=yes
+
+- name: Install Morfeusz
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - morfeusz-sgjp
+

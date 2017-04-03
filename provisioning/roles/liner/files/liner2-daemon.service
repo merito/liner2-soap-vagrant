@@ -1,0 +1,11 @@
+[Unit]
+Description=Liner2 Daemon
+After=mysql.service
+
+[Service]
+Restart=on-failure
+ExecStart=/opt/liner25_master_rc3/liner2-daemon sql -models /opt/liner251-ws-pack-example/daemon_cfg.ini -max_threads 10 -db_uri badger:badgerPWr@localhost:3306/nerws -ip localhost -p 3333
+
+[Install]
+WantedBy=multi-user.target
+

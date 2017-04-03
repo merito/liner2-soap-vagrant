@@ -1,0 +1,35 @@
+---
+- name: Install tools
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - libtool
+    - unzip
+    - p7zip-full
+    - autogen
+    - autoconf
+    - libtool
+
+- name: Download Liner 2.5
+  get_url: url=https://clarin-pl.eu/dspace/bitstream/handle/11321/231/liner25_master_rc3.7z dest=/opt/liner25_master_rc3.7z
+
+- name: Extract Liner
+  command: chdir=/opt creates=/opt/liner25_master_rc3 7z x liner25_master_rc3.7z
+
+- name: Fix wrong wcrft call
+  patch: src=files/patch.txt basedir=/opt strip=0
+
+- name: Build Liner
+  command: chdir=/opt/liner25_master_rc3 ./gradlew build -x test
+  environment: 
+    JAVA_HOME: /usr/lib/jvm/default-java
+
+- name: Copy missing daemon file
+  copy: src=files/liner2-daemon dest=/opt/liner25_master_rc3/liner2-daemon mode=0755
+
+- name: Copy Liner2 service file
+  copy: src=files/liner2-daemon.conf dest=/etc/init/liner2-daemon.conf owner=root group=root mode=0644
+  notify: restart liner2-daemon
+
+#- name: Copy Liner2 service file
+#  copy: src=files/liner2-daemon.service dest=/etc/systemd/system owner=root group=root mode=0750
+#  notify: restart liner2-daemon

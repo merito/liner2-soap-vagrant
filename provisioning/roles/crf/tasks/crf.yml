@@ -1,0 +1,26 @@
+---
+- name: Install tools
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - libtool
+    - unzip
+    - p7zip-full
+    - autogen
+    - autoconf
+    - libtool
+
+- name: Download Liner 2.5 with working CRF++
+  get_url: url=https://clarin-pl.eu/dspace/bitstream/handle/11321/231/liner25_master_rc3.7z dest=/opt/liner25_master_rc3.7z
+
+- name: Extract Liner
+  command: chdir=/opt creates=/opt/liner25_master_rc3 7z x liner25_master_rc3.7z
+
+- name: Unarchive CRF++
+  unarchive: src=/opt/liner25_master_rc3/g419-external-dependencies/CRF++-0.57.tar.gz dest=/opt/liner25_master_rc3/g419-external-dependencies remote_src=yes
+
+- name: Build CRF++
+  command: chdir=/opt/liner25_master_rc3/g419-external-dependencies/CRF++-0.57 {{ item }}
+  with_items:
+    - ./configure
+    - make
+    - make install

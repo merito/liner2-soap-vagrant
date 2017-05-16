@@ -1,4 +1,11 @@
 ---
+- name: Install sfst libs
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - libsfst1-1.4
+    - libsfst1-1.4-dev
+    - sfst
+
 - name: Clone Maca repo
   git: repo=http://nlp.pwr.wroc.pl/maca.git dest=/opt/maca
 

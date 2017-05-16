@@ -1,9 +1,14 @@
 ---
-- name: Add PPA Bartosz Zaborowski NLP
-  apt_repository: repo=ppa:bartosz-zaborowski/nlp state=present update_cache=yes
+- name: Download and extract Morfeusz SGJP
+  unarchive: src=http://sgjp.pl/morfeusz/download/morfeusz-SGJP-linux64-20130413.tar.bz2 dest=/opt/ remote_src=yes
 
-- name: Install Morfeusz
-  apt: name={{ item }} state=latest update_cache=yes
-  with_items:
-    - morfeusz-sgjp
+- name: Copy binaries
+  copy: src=/opt/morfeusz dest=/usr/local/bin owner=root group=root mode=0755 remote_src=yes
 
+- name: Copy includes
+  copy: src=/opt/morfeusz.h dest=/usr/local/include owner=root group=root mode=0644 remote_src=yes
+
+- name: Copy libraries
+  copy: src=/opt/libmorfeuszSGJP.so.0.7 dest=/usr/local/lib owner=root group=root mode=0644 remote_src=yes
+- copy: src=/opt/libmorfeusz.so dest=/usr/local/lib owner=root group=root mode=0644 remote_src=yes
+- copy: src=/opt/libmorfeusz.so.0 dest=/usr/local/lib owner=root group=root mode=0644 remote_src=yes

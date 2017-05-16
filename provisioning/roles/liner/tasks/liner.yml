@@ -26,10 +26,10 @@
 - name: Copy missing daemon file
   copy: src=files/liner2-daemon dest=/opt/liner25_master_rc3/liner2-daemon mode=0755
 
-- name: Copy Liner2 service file
-  copy: src=files/liner2-daemon.conf dest=/etc/init/liner2-daemon.conf owner=root group=root mode=0644
-  notify: restart liner2-daemon
-
 #- name: Copy Liner2 service file
-#  copy: src=files/liner2-daemon.service dest=/etc/systemd/system owner=root group=root mode=0750
+#  copy: src=files/liner2-daemon.conf dest=/etc/init/liner2-daemon.conf owner=root group=root mode=0644
 #  notify: restart liner2-daemon
+
+- name: Copy Liner2 service file
+  copy: src=files/liner2-daemon.service dest=/etc/systemd/system owner=root group=root mode=0750
+  notify: restart liner2-daemon

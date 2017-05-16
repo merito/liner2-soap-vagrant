@@ -18,9 +18,11 @@
 - name: Create MySQL user and grant privileges
   command: mysql -u root -e "grant all privileges on * . * to 'badger'@'localhost';"
 - name: Create MySQL user and grant privileges
-  command: mysql -u root -e "grant all privileges on * . * to '\"$NERWS_DB_USER\"'@'%';"
+  command: mysql -u root -e "grant all privileges on * . * to 'badger'@'%';"
 - name: Create MySQL user and grant privileges
   command: mysql -u root -e "flush privileges;"
+
+- lineinfile: path=/opt/ner-ws/database/liner2_create.sql regexp='GRANT SELECT, EXECUTE, LOCK TABLES ON clarinws.* TO \'clarin\'@\'localhost\';' line='GRANT SELECT, EXECUTE, LOCK TABLES ON clarinws.* TO \'badger\'@\'localhost\';'
 
 - name: Fill database
   shell: mysql -u root nerws < /opt/ner-ws/database/liner2_create.sql

@@ -13,7 +13,6 @@
     - libapache2-mod-wsgi
     - php5
     - libapache2-mod-php5
-    - phpmyadmin
     - python-mysqldb
   notify: restart apache
 

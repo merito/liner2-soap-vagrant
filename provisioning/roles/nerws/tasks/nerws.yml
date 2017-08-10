@@ -1,9 +1,6 @@
 ---
-- name: Download Ner-Ws repo
-  get_url: url=http://tools.clarin-pl.eu/share/ner-ws.7z dest=/opt/ner-ws.7z
-
-- name: Extract Ner-Ws
-  command: chdir=/opt creates=/opt/ner-ws 7z x ner-ws.7z
+- name: Download Ner-Ws fork repo
+  git: repo='https://github.com/merito/ner-ws.git' dest=/opt
 
 - name: Create MySQL database
   mysql_db: name=nerws state=present encoding=utf8
